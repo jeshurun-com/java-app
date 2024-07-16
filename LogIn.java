@@ -86,7 +86,7 @@ public class LogIn extends JFrame {
         }
     }
 
-//    public static void main(String[] args) {
-//        SwingUtilities.invokeLater(LogIn::new);
-//    }
+    public static void main(String[] args) {
+       SwingUtilities.invokeLater(LogIn::new);
+    }
 }
