@@ -98,7 +98,7 @@ public class Register extends JFrame {
             }
 
             // JDBC code to insert data into the MySQL database
-            try (Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/Quiz", "root@localhost", "")) {
+            try (Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/Quiz", "root", "")) {
                 String query = "INSERT INTO Students (id, first_name, last_name) VALUES (?, ?, ?)";
                 try (PreparedStatement pstmt = conn.prepareStatement(query)) {
                     pstmt.setString(1, id);
@@ -124,3 +124,8 @@ public class Register extends JFrame {
         SwingUtilities.invokeLater(Register::new);
     }
 }
+// Compilation
+//javac -cp .:mysql-connector-j-8.3.0.jar Register.java
+
+// Execution
+//java -cp .:mysql-connector-j-8.3.0.jar Register
