@@ -2,6 +2,10 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 
 public class Register extends JFrame {
 
@@ -84,9 +88,33 @@ public class Register extends JFrame {
         String lastName = last_name_field.getText();
         // Example of a simple validation; you can expand this as needed
         if (!id.isEmpty() && !firstName.isEmpty() && !lastName.isEmpty()) {
-            JOptionPane.showMessageDialog(this, "Registration Successful");
-            new App(); // Ensure the App class is properly defined
-            dispose();
+            // Load MySQL JDBC Driver
+            try {
+                Class.forName("com.mysql.cj.jdbc.Driver");
+            } catch (ClassNotFoundException e) {
+                e.printStackTrace();
+                JOptionPane.showMessageDialog(this, "MySQL JDBC Driver not found");
+                return;
+            }
+
+            // JDBC code to insert data into the MySQL database
+            try (Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/Quiz", "root@localhost", "")) {
+                String query = "INSERT INTO Students (id, first_name, last_name) VALUES (?, ?, ?)";
+                try (PreparedStatement pstmt = conn.prepareStatement(query)) {
+                    pstmt.setString(1, id);
+                    pstmt.setString(2, firstName);
+                    pstmt.setString(3, lastName);
+                    pstmt.executeUpdate();
+                    JOptionPane.showMessageDialog(this, "Registration Successfull");
+                    // clear the fields after successful registration
+                    id_field.setText("");
+                    first_name_field.setText("");
+                    last_name_field.setText("");
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+                JOptionPane.showMessageDialog(this, "Database Error: " + e.getMessage());
+            }
         } else {
             JOptionPane.showMessageDialog(this, "Please fill all fields");
         }
