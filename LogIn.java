@@ -81,7 +81,7 @@ public class LogIn extends JFrame {
                     ResultSet rs = pstmt.executeQuery();
                     if (rs.next()) {
                         JOptionPane.showMessageDialog(this, "Access Granted");
-                        new App();
+                        new App(studentId).setVisible(true);
                         dispose();
                     } else {
                         JOptionPane.showMessageDialog(this, "Invalid Student ID");

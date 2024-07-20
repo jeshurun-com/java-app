@@ -1,8 +1,15 @@
+import com.itextpdf.text.Document;
+import com.itextpdf.text.DocumentException;
+import com.itextpdf.text.Paragraph;
+import com.itextpdf.text.pdf.PdfWriter;
+import javax.swing.border.EmptyBorder;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import javax.swing.border.EmptyBorder;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 
 public class App extends JFrame {
     private static final long serialVersionUID = 1L;
@@ -15,13 +22,14 @@ public class App extends JFrame {
     private String[][] choices;
     private String[] correctAnswers;
     private String[] userAnswers;
+    private String userId;
 
-    public App() {
+    public App(String userId) {
+        this.userId = userId;
         setTitle("Quiz App");
         setSize(400, 300);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
-        setVisible(true);
 
         // Initialize data
         questions = new String[]{
@@ -95,6 +103,7 @@ public class App extends JFrame {
         add(southPanel, BorderLayout.SOUTH);
 
         loadQuestion(currentQuestionIndex);
+        setVisible(true);
     }
 
     private void loadQuestion(int index) {
@@ -139,6 +148,7 @@ public class App extends JFrame {
             if (validateSelection()) {
                 saveAnswer();
                 showResults();
+                generatePDF(userId, calculateScore());
             } else {
                 JOptionPane.showMessageDialog(null, "Please select an answer.");
             }
@@ -175,11 +185,34 @@ public class App extends JFrame {
         dispose();
     }
 
-//    public static void main(String[] args) {
-//        SwingUtilities.invokeLater(new Runnable() {
-//            public void run() {
-//                new App().setVisible(true);
-//            }
-//        });
-//    }
+    private int calculateScore() {
+        int correctCount = 0;
+        for (int i = 0; i < questions.length; i++) {
+            if (userAnswers[i] != null && userAnswers[i].equals(correctAnswers[i])) {
+                correctCount++;
+            }
+        }
+        return correctCount;
+    }
+
+    private void generatePDF(String userId, int score) {
+        Document document = new Document();
+        try {
+            PdfWriter.getInstance(document, new FileOutputStream("QuizResult.pdf"));
+            document.open();
+            document.add(new Paragraph("Quiz Result"));
+            document.add(new Paragraph("User ID: " + userId));
+            document.add(new Paragraph("Score: " + score + " out of " + questions.length));
+        } catch (DocumentException | FileNotFoundException e) {
+            e.printStackTrace();
+        } finally {
+            document.close();
+        }
+        JOptionPane.showMessageDialog(null, "Result PDF generated!");
+    }
+
+    public static void main(String[] args) {
+        // For testing, replace with actual user ID
+        new App("123").setVisible(true);
+    }
 }
