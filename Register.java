@@ -86,7 +86,7 @@ public class Register extends JFrame {
         String id = id_field.getText();
         String firstName = first_name_field.getText();
         String lastName = last_name_field.getText();
-        // Example of a simple validation; you can expand this as needed
+
         if (!id.isEmpty() && !firstName.isEmpty() && !lastName.isEmpty()) {
             // Load MySQL JDBC Driver
             try {
