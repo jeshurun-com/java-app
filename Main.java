@@ -1,10 +1,8 @@
 public class Main {
 
     public static void main(String[] args) {
-        // Java program that greets the user
         greetUser();
 
-        // Variable Declaration and Initialization
         variableDeclarationAndInitialization();
 
         // Updating Variables
