@@ -36,19 +36,16 @@ public class App extends JFrame {
                 "What is the capital of France?",
                 "What is the capital of Germany?",
                 "What is the capital of Spain?"
-                // Add more questions as needed
         };
         choices = new String[][]{
                 {"Berlin", "Madrid", "Paris", "Rome"},
                 {"Berlin", "Madrid", "Paris", "Rome"},
                 {"Berlin", "Madrid", "Paris", "Rome"}
-                // Add choices for more questions
         };
         correctAnswers = new String[]{
                 "Paris",
                 "Berlin",
                 "Madrid"
-                // Add correct answers for more questions
         };
         userAnswers = new String[questions.length];
 
@@ -171,7 +168,7 @@ public class App extends JFrame {
                 return;
             }
         }
-        userAnswers[currentQuestionIndex] = null; // No answer selected
+        userAnswers[currentQuestionIndex] = null;
     }
 
     private void showResults() {
@@ -212,7 +209,6 @@ public class App extends JFrame {
     }
 
     public static void main(String[] args) {
-        // For testing, replace with actual user ID
         new App("123").setVisible(true);
     }
 }
